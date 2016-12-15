@@ -135,6 +135,8 @@ create table test_table7 (
 => not null 옵션과 default 옵션의 순서를 바꿀 수 있다.
 ~~~~
 
+
+
 ## 테이블 변경
 테이블을 생성한 후 컬럼을 추가, 변경, 삭제할 수 있다.
 
@@ -358,6 +360,8 @@ insert into test_child(uid, title) values('3', 'hello3');
 insert into test_child(uid, title) values('4', 'hello4'); --실행오류
 ~~~~
 
+
+
 ## 테이블 삭제
 
 문법)
@@ -370,6 +374,8 @@ drop table 테이블명;
 drop table test_table1;
 ~~~~
 
+
+
 ## 테이블 정보 조회
 
 문법)
@@ -380,6 +386,8 @@ describe 테이블명;
 
 desc 테이블명;
 ~~~~
+
+
 
 ## 테이블 목록 조회
 MySQL 전용 명령어
