@@ -2,15 +2,17 @@
 SQL 문법 중에서 데이터 구조를 정의할 때 사용하는 문법
 
 ## 테이블 만들기
-~~~~
 문법)
+~~~~
 create table 테이블명 (
   컬럼명 타입 옵션,
   컬럼명 타입 옵션,
   ...
 );
+~~~~
 
 예)
+~~~~
 create table test_table1 (
   c1 int,
   c2 varchar(10),
@@ -26,8 +28,9 @@ create table test_table1 (
 
 ### PK가 없는 테이블
 Primary Key가 없으면 중복 데이터가 입력될 수 있다.
-~~~~
+
 예)
+~~~~
 create table test_table1 (
   uid varchar(10),
   pwd varchar(10)
@@ -83,12 +86,15 @@ create table test_table3 (
 ~~~~
 
 테이블 을 생성한 수 제약조건을 설정할 때 Primary Key 컬럼을 지정할 수 있다.
-~~~~
+
 문법)
+~~~~
 alter table 테이블명
   add constraint [제약조건라벨] primary key (컬럼명, 컬럼명,...)
+~~~~
 
 예)
+~~~~
 create table test_table4 (
   uid varchar(10),
   pwd varchar(10)
@@ -133,12 +139,15 @@ create table test_table7 (
 테이블을 생성한 후 컬럼을 추가, 변경, 삭제할 수 있다.
 
 ### 컬럼 추가
-~~~~
+
 문법)
+~~~~
 alter table 테이블명
   add [컬럼] 컬럼명 옵션;
+~~~~
   
 예)
+~~~~
 create table test_table8 (
   c1 int
 );
@@ -148,42 +157,55 @@ alter table test_table8
 ~~~~
 
 ### 컬럼 삭제
-~~~~
+
 문법)
+~~~~
 alter table 테이블명
   drop [컬럼] 컬럼명;
+~~~~
   
 예)
+~~~~
 alter table test_table8
   drop c1;
 ~~~~
 
 ### 컬럼 변경
-~~~~
+
 문법1) 기존 컬럼의 정의를 변경한다.
+~~~~
 alter table 테이블명
   modify [컬럼] 컬럼명 데이터형 옵션;
+~~~~
 
 예)
+~~~~
 alter table test_table8
   modify c2 int;
+~~~~
 
 문법2) 컬럼 이름도 바꾸고 싶다면
+~~~~
 alter table test_table8
   change 현재컬럼명 변경이름 옵션;
+~~~~
 
 예)
+~~~~
 alter table test_table8
   change c2 ok date not null;
 ~~~~
 
 ### 유니크 컬럼 추가
-~~~~
+
 문법)
+~~~~
 alter table 테이블명
   add [constraint [라벨명]] unique (컬럼명, 컬럼명,...);
+~~~~
   
 예)
+~~~~
 create table test_table9 (
   uno int not null,
   name varchar(20) not null,
@@ -203,25 +225,29 @@ alter table test_table9
 ~~~~
 
 ### Primary Key 제약조건 제거
-~~~~
+
 문법)
+~~~~
 alter table 테이블명
   drop primary key;
+~~~~
 
 예)
+~~~~
 alter table test_table9
   drop primary key; 
 ~~~~
 
 ### 유니크 제약 조건 삭제하기
-~~~~
+
 문법)
+~~~~
 alter table 테이블명
   drop [index|key] 인덱스명;
+~~~~
 
-예) 
-인덱스(유니크 또는 일반 인덱스) 이름을 모른다면 다음 SQL 문을 이용하여 해당 테이블의 인덱스 이름을 알아내라.
-
+예) 인덱스(유니크 또는 일반 인덱스) 이름을 모른다면 다음 SQL 문을 이용하여 해당 테이블의 인덱스 이름을 알아내라.
+~~~~
 select table_name, index_name, column_name from information_schema.statistics
   where table_name='test_table9';
   
@@ -238,9 +264,9 @@ alter table test_table9
 
 ### PK 컬럼 값이 자동 증가 하도록 만들기
 PK 컬럼에 auto_incremnet 옵션을 붙인다.
-~~~~
 문법1) 테이블을 정의할 때 붙이기
 예)
+~~~~
 create table test_table10 (
   uno int primary key not null auto_increment,
   name varchar(20) not null,
@@ -248,9 +274,11 @@ create table test_table10 (
   uid varchar(50) not null,
   pwd varchar(20) not null
 );
+~~~~
 
 문법2) 테이블을 정의한 후 auto_increment 붙이기
 예)
+~~~~
 create table test_table11 (
   uno int not null,
   name varchar(20) not null,
@@ -269,8 +297,8 @@ alter table test_table11
 ### auto_increment 컬럼의 활용
 - PK 컬럼에 auto_increment를 지정하면 입력할 때 자동으로 증가된 값이 들어간다.
 - 데이터를 삭제하더라도 중간에 빠진 숫자를 보충하지않는다. 그냥 버리고 계속 증가한다.
-~~~~
 예)
+~~~~
 create table test_table12 (
   uno int primary key auto_increment,
   name varchar(20) not null
@@ -290,22 +318,61 @@ insert into test_table12(name) values('가나다라마바사아자차abcdefghij');
 ~~~~
 
 ### 외부 키 컬럼 지정하기
-~~~~
 문법)
+~~~~
 alter table 테이블명
   add foreign key (컬럼명) references 테이블명;
 ~~~~
 
+예)
+~~~~
+create table test_parent (
+  uid int primary key auto_increment,
+  name varchar(20) not null,
+  tel varchar(20)
+);
+
+create table test_child (
+  bno int primary key auto_increment,
+  uid int not null,
+  title varchar(100) not null,
+  content text
+);
+
+--외부키 컬럼 설정
+alter table test_child
+  add foreign key (uid) references test_parent(uid);
+
+--부모 테이블 데이터 입력
+insert into test_parent(name) values('홍길동');
+insert into test_parent(name) values('홍길동2');
+insert into test_parent(name) values('홍길동3');
+
+--자식 테이블 데이터 입력
+insert into test_child(uid, title) values('1', 'hello');
+insert into test_child(uid, title) values('2', 'hello2');
+insert into test_child(uid, title) values('2', 'hello22');
+insert into test_child(uid, title) values('3', 'hello3');
+
+--부모 테이블에 존재하지 않는 uid의 값으로 자식 테이블에 데이터 입력하기
+insert into test_child(uid, title) values('4', 'hello4'); --실행오류
+~~~~
 
 ## 테이블 삭제
+
+문법)
 ~~~~
 drop table 테이블명;
+~~~~
 
 예)
+~~~~
 drop table test_table1;
 ~~~~
 
 ## 테이블 정보 조회
+
+문법)
 ~~~~
 describe 테이블명;
 
@@ -316,6 +383,8 @@ desc 테이블명;
 
 ## 테이블 목록 조회
 MySQL 전용 명령어
+
+문법)
 ~~~~
 show tables;
 ~~~~
