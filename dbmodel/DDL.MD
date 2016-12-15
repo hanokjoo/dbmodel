@@ -3,6 +3,7 @@ SQL 문법 중에서 데이터 구조를 정의할 때 사용하는 문법
 
 ## 테이블 만들기
 ~~~~
+문법)
 create table 테이블명 (
   컬럼명 타입 옵션,
   컬럼명 타입 옵션,
@@ -26,6 +27,7 @@ create table test_table1 (
 ### PK가 없는 테이블
 Primary Key가 없으면 중복 데이터가 입력될 수 있다.
 ~~~~
+예)
 create table test_table1 (
   uid varchar(10),
   pwd varchar(10)
@@ -205,7 +207,7 @@ alter table test_table9
 문법)
 alter table 테이블명
   drop primary key;
-  
+
 예)
 alter table test_table9
   drop primary key; 
@@ -216,27 +218,29 @@ alter table test_table9
 문법)
 alter table 테이블명
   drop [index|key] 인덱스명;
-  
-예)
+
+예) 
 인덱스(유니크 또는 일반 인덱스) 이름을 모른다면 다음 SQL 문을 이용하여 해당 테이블의 인덱스 이름을 알아내라.
+
 select table_name, index_name, column_name from information_schema.statistics
   where table_name='test_table9';
   
 또는
 
 show index from test_table9;
- 
+~~~~
+
 'uid' 인덱스 삭제
+~~~~
 alter table test_table9
   drop index uid;
 ~~~~
 
 ### PK 컬럼 값이 자동 증가 하도록 만들기
 PK 컬럼에 auto_incremnet 옵션을 붙인다.
-
+~~~~
 문법1) 테이블을 정의할 때 붙이기
 예)
-~~~~
 create table test_table10 (
   uno int primary key not null auto_increment,
   name varchar(20) not null,
@@ -244,11 +248,9 @@ create table test_table10 (
   uid varchar(50) not null,
   pwd varchar(20) not null
 );
-~~~
 
 문법2) 테이블을 정의한 후 auto_increment 붙이기
 예)
-~~~~
 create table test_table11 (
   uno int not null,
   name varchar(20) not null,
@@ -267,8 +269,8 @@ alter table test_table11
 ### auto_increment 컬럼의 활용
 - PK 컬럼에 auto_increment를 지정하면 입력할 때 자동으로 증가된 값이 들어간다.
 - 데이터를 삭제하더라도 중간에 빠진 숫자를 보충하지않는다. 그냥 버리고 계속 증가한다.
-예)
 ~~~~
+예)
 create table test_table12 (
   uno int primary key auto_increment,
   name varchar(20) not null
@@ -278,6 +280,20 @@ insert into test_table12(name) values('홍길동');
 insert into test_table12(name) values('홍길동2');
 insert into test_table12(name) values('홍길동3');
 insert into test_table12(name) values('홍길동4');
+~~~~
+
+varchar(20)의 크기? 한글, 영어 구분 없이 글자수 20개까지 입력 가능.
+~~~~
+insert into test_table12(name) values('가나다라마바사아자차가나다라마바사아자차카타파하');
+insert into test_table12(name) values('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into test_table12(name) values('가나다라마바사아자차abcdefghij');
+~~~~
+
+### 외부 키 컬럼 지정하기
+~~~~
+문법)
+alter table 테이블명
+  add foreign key (컬럼명) references 테이블명;
 ~~~~
 
 
