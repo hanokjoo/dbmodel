@@ -52,6 +52,7 @@ select * from test_table1;
 
 ### PK가 있는 테이블
 Primary Key로 설정된 컬럼은 데이터를 중복하여 입력할 수 없다.
+자동으로 not null로 설정된다.
 ~~~~
 create table test_table2 (
   uid varchar(10) primary key,
@@ -85,7 +86,7 @@ create table test_table3 (
 );
 ~~~~
 
-테이블 을 생성한 수 제약조건을 설정할 때 Primary Key 컬럼을 지정할 수 있다.
+테이블을 생성한 후 제약조건을 설정할 때 Primary Key 컬럼을 지정할 수 있다.
 
 문법)
 ~~~~
@@ -258,6 +259,12 @@ select table_name, index_name, column_name from information_schema.statistics
 show index from test_table9;
 ~~~~
 
+'email' 인덱스 삭제
+~~~~
+alter table test_table9
+  drop index email;
+~~~~
+
 'uid' 인덱스 삭제
 ~~~~
 alter table test_table9
@@ -395,4 +402,6 @@ MySQL 전용 명령어
 문법)
 ~~~~
 show tables;
+
+show tables from 스키마이름(=데이터베이스이름);
 ~~~~
