@@ -267,10 +267,89 @@ from mgr
 where mrno in (select tno from tcher);
 ~~~~
 
+### MySQL 빌트인 함수/프로시저
+#### count(* 또는 컬럼명) : 레코드 개수를 알아내기
+~~~~
+select count(*) from stud;
+~~~~
 
+#### concat(값, 값, 값, ...) : 문자열 연결하기
+~~~~
+select concat(mno, ',', name, '(', email, ')') as user
+from memb;
+~~~~
 
+#### format(값, 소수점이하자릿수, 국가코드) : 숫자를 고정소수점으로 표현
+~~~~
+select format(1234567.7654321, 3);
+~~~~
 
+#### to_base64(문자열) : 문자열을 BASE64 인코딩 하여 리턴한다.
+- BASE64? 문자열을 ASCII코드화 시키는 것. 보통 네트워킹으로 다른 장치에게 값을 보낼 때 사용.
+- 왜? 네트워크 장비중에서는 7비트까지만 처리하는 장비가 있기 때문이다. 
+      즉 8비트를 처리하지 못하는 장비가 있다. 
+      이런 경우 7비트를 사용하는 ASCII로 인코딩한다면, 문제없이 데이터를 전달할 수 있다.
+- ASCII 문자 집합은 7비트까지만 사용한다.
+~~~~
+select to_base64('ABCabc012가각간');
+~~~~ 
 
+#### from_base64(base64로 인코딩된 문자열) : 원래의 문자열로 디코딩하여 리턴한다.
+~~~~
+select from_base64('QUJDYWJjMDEysKGworCj');
+~~~~
+
+#### strcmp(문자열1, 문자열2) : 두 문자열을 비교하여 같으면 0, 왼쪽이 크면 1, 그 밖에 -1
+~~~~
+select strcmp('ABC', 'ABC');
+select strcmp('ABD', 'ABC');
+select strcmp('ABC', 'ABD');
+~~~~
+
+#### trim() : 문자열 양쪽에 있는 공백 및 특정 문자 제거
+~~~~
+--trim(문자열)
+select concat('[', trim('   abc def  '), ']');
+
+--trim(leading '제거할문자' from '문자열');
+select trim(leading 'k' from 'kkkabckkk');
+
+--trim(tailing '제거할문자' from '문자열')
+select trim(trailing 'k' from 'kkkabckkk');
+
+--trim(both '제거할문자' from '문자열')
+select trim(both 'k' from 'kkkabckkk');
+~~~~
+
+#### curdate() : 현재 날짜 조회
+~~~~
+select curdate();
+~~~~
+
+#### curtime() : 현재 시간 조회
+~~~~
+select curtime();
+~~~~
+
+#### currrent_timestamp(), now() : 현재 날짜 시간 조회
+~~~~
+select current_timestamp();
+select now();
+~~~~
+
+#### get_format(date/time, 옵션) : 날짜 출력 형식을 문자열로 뽑아내기
+~~~~
+select get_format(date, 'USA');
+select get_format(date, 'ISO');
+~~~~
+
+#### date_format(날짜, 출력형식) : 날짜를 지정된 형식의 문자열로 변환하기
+~~~~
+select date_format(now(), '%m.%d.%Y');
+select date_format(now(), '%m.%d.%y');
+select date_format(now(), '%Y-%m-%d');
+select date_format(now(), '%Y-%m-%d %H:%i:%s');
+~~~~
 
 
 
